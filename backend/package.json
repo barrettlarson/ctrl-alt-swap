@@ -20,6 +20,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
+    "stripe": "^18.5.0",
     "supertest": "^7.1.4"
   }
 }

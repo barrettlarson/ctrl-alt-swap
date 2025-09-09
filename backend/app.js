@@ -1,6 +1,8 @@
 const express = require('express');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
+const stripeWebHookRoutes = require('./routes/stripeWebHookRoutes');
 
 const app = express();
 
@@ -20,12 +22,15 @@ app.use(cors({
     credentials: false
 }));
 
+app.use('/webhook', stripeWebHookRoutes);
 app.use(express.json());
 
 app.get('/health', (req, res) => res.status(200).send('OK'));
 
 app.use('/auth', authRoutes);
 app.use('/Product', productRoutes);
+app.use('/checkout', checkoutRoutes);
+
 
 app.get('/', (req, res) => {
     res.send('API is running');

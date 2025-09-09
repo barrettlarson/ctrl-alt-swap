@@ -17,10 +17,10 @@ const addressSchema = new mongoose.Schema({
 }, {_id: false});
 
 const orderSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     items: { type: [orderItemSchema], required: true },
     amount: { type: Number, required: true },
-    shippingAddress: { type: addressSchema, required: true },
+    shippingAddress: { type: addressSchema},
     status: { type: String, enum: ['pending', 'shipped', 'delivered', 'cancelled'], default: 'pending' },
     stripeSessionId: { type: String },
     paymentIntentId: { type: String },

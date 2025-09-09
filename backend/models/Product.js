@@ -45,6 +45,11 @@ const productSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now,
+    }, 
+    available: {
+        type: Boolean,
+        default: true,
+        required: true,
     }
 }, { timestamps: true });
 
