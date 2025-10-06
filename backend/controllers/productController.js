@@ -4,7 +4,7 @@ const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find({});
         if (!products || products.length === 0) {
-            return res.status(404).json({ message: 'No products found' });
+            return res.status(200).json([]);
         }
         res.status(200).json(products);
 
@@ -100,10 +100,43 @@ const updateProduct = async (req, res) => {
     }
 };
 
+const seedProducts = async (req, res) => {
+    try {
+        const sampleProducts = [
+            { name: 'Mechanical Keyboard', price: 59.99, images: ['https://i.pcmag.com/imagery/roundups/02th3QKnG4NLgUrOSBe1cfh-30.fit_lim.size_1050x.jpg'], condition: 'new', category: 'keyboards', condition: 'new' },
+            { name: 'HyperX Mouse', price: 39.99, images: ['https://row.hyperx.com/cdn/shop/products/hyperx_pulsefire_raid_2_angled_back.jpg?v=1662435267'], category: 'mice', condition: 'new' },
+        ];
+
+    const makeSlug = s => s.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
+    const prepared = sampleProducts.map((p, i) => {
+        const base = makeSlug(p.name || `product-${i}`);
+        const uniq = `${base}-${Date.now().toString(36).slice(-4)}-${i}`;
+        return {
+            name: p.name,
+            price: p.price,
+            images: p.images || [],
+            condition: p.condition || '',
+            category: p.category || 'uncategorized',
+            description: p.description || '',
+            brand: p.brand || '',
+            slug: uniq
+        };
+    });
+
+    await  Product.deleteMany({});
+    const created = await Product.insertMany(prepared);
+    return res.status(201).json(created);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
     removeProduct,
-    updateProduct
+    updateProduct,
+    seedProducts
 };

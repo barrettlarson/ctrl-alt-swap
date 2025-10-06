@@ -42,11 +42,11 @@ describe('Create Checkout Session', () => {
             .expect(201);
         
         const created = createProduct.body;
-
+        
         const session = await request(app)
             .post('/checkout/create-checkout-session')
             .send({ email: 'testemail@outlook.com', items: [ { productId: String(created._id) }] });
-            
+
         expect(session.statusCode).toBe(200);
         expect(session.body.url).toBeDefined();
     });

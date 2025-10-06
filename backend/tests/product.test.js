@@ -109,10 +109,11 @@ describe('POST /Product', () => {
 
 describe('GET /Product', () => {
     Product.deleteMany({});
-    it('should return 404 if no products are found', async () => {
+    it('should return empty array if no products are found', async () => {
         const res = await request(app)
             .get('/Product');
-        expect(res.statusCode).toBe(404);
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual([]);
     });
 
     it('should return all products', async () => {
@@ -273,6 +274,15 @@ describe('DELETE /Product/:id', () => {
             .get(`/Product/${productId}`);
         expect(getRes.statusCode).toBe(404);
     });
+});
+
+describe('POST /Product/seed', () => {
+    it('should seed the database with sample products', async () => {
+        const res = await request(app)
+            .post('/Product/seed');
+        expect(res.statusCode).toBe(201);
+        expect(res.body.length).toBeGreaterThan(0);
+    })
 });
     
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,7 @@
   justify-content: center;
   height: 100vh;
   background-color: #f5f6fa;
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .auth-form {
@@ -59,8 +61,62 @@
   transition: border-color 0.2s;
 }
 
-nav {
+header {
   display: flex;
+  flex-direction: row;
   justify-content:space-evenly;
   align-items: center;
+  background-color: #2564cf;
+  color: white;
+}
+
+.search-bar {
+  border: 0.0625rem solid #e0e3ea;
+  border-radius: 1.25rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  background: #f5f6fa;
+  outline: none;
+  width: 13.75rem;
+  transition: border 0.2s;
+}
+
+.cart-icon {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.product-card {
+  border: 1px solid #e0e3ea;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+}
+
+.product-photo {
+  height: 150px;
+  object-fit: cover;
+}
+
+button {
+  cursor: pointer;
+  background: #2564cf;
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
 }
