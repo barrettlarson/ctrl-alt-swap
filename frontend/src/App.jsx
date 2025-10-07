@@ -6,6 +6,7 @@ import { API_URL } from './api'
 function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]); 
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,14 +43,22 @@ function App() {
   const totalCount = useMemo(() => cart.reduce((s, i) => s + i.quantity, 0), [cart]);
 
   const checkout = async () => {
-    navigate('/Checkout');
+    if(!cart.length) return alert('Cart is empty');
+    else {
+      navigate('/checkout', { state: { cart } });
+    }
+
   }
 
   return (
     <>
       <header>
         <h1>CtrlAltSwap!</h1>
-        <input className='search-bar' type="text" placeholder="Search for items..." />
+        <input className='search-bar' 
+          type="text" 
+          placeholder="Search for items..." 
+          value={search} 
+          onChange={e => setSearch(e.target.value)} />
         <div className='cart-and-count'>
           <img className='cart-icon' onClick={checkout} src='https://cdn-icons-png.flaticon.com/512/1170/1170678.png' alt='cart icon' />
           <span className='item-count'>{totalCount}</span>
@@ -57,11 +66,13 @@ function App() {
       </header>
       <main>
         <div className='product-grid'>
-          {products.map(p => (
+          {products
+          .filter(p=> p.name.toLowerCase().includes(search.toLowerCase()))
+          .map(p => (
             <div key={p._id || p.id } className="card">
-              <img src={(p.images && p.images[0]) || 'https://via.placeholder.com/300'} alt={p.name} />
+              <img className="product-image" src={(p.images && p.images[0]) || 'https://via.placeholder.com/300'} alt={p.name} />
               <h3>{p.name}</h3>
-              <p>{p.price}</p>
+              <p>${p.price}</p>
               <button onClick={() => addToCart(p._id || p.id)}>Add to Cart</button>
             </div>
         ))}
