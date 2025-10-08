@@ -98,7 +98,7 @@ header {
   padding: 1rem;
 }
 
-.card {
+.product-card {
   border: 1px solid #e0e3ea;
   border-radius: 0.5rem;
   padding: 1rem;
@@ -132,4 +132,60 @@ button {
   height: 200px;
   object-fit: cover;
   border-radius: 0.5rem;
+}
+
+.checkout-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.checkout-card {
+  border: 1px solid #e0e3ea;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+  width: 800px;
+  min-height: 150px;
+  position: relative;
+}
+
+.checkout-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.remove-icon {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  margin: 0;
+}
+
+.checkout-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+
+.checkout-summary {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 300px;
+  height: 100%;
+  text-align: center;
 }
