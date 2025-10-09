@@ -32,6 +32,12 @@ function App() {
   }, []);
 
   function addToCart(productId) {
+    for(let item of cart) {
+      if(String(item.productId) === String(productId)) {
+        alert('Item already in cart');
+        return;
+      }
+    }
     setCart(prev => {
       const found = prev.find(i => String(i.productId) === String(productId));
       if (found) return prev.map(i => i.productId === productId ? { ...i, quantity: i.quantity + 1 } : i);
