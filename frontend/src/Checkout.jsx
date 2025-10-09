@@ -1,28 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './index.css';
 
 function Checkout() {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const stored = (() => {
+        try { return JSON.parse(localStorage.getItem('cart') || '[]'); }
+        catch { return []; }
+    })();
     const initialCart = (location && location.state && location.state.cart) || [];
     const [cart, setCart] = useState(initialCart);
     
-    const total = cart.reduce((sum, item) => sum + (item.product?.price ?? item.price ?? 0), 0);
+    const total = cart.reduce((sum, item) => {
+        const price = Number(item.product?.price || item.price || 0);
+        return sum + price;
+    }, 0);
+
+    useEffect(() => {
+        if(cart.length == 0) {
+            continueShopping();
+        }
+    })
 
     function continueShopping() {
-        navigate('/App');
+        navigate('/App', { state: { cart } });
     }
 
     function removeItem(itemId) {
         setCart(prev => prev.filter(i => String(i.product?._id || i._id || i.id) !== String(itemId)));
     }
 
+    function purchase() {
+        alert('Purchase completed! (not really, this is just a demo)');
+    }
+
     return (
         <>
         <header>
             <h1>My Cart</h1>
-            <button onClick={() => continueShopping()}>Continue Shopping</button>
         </header>
         <main className='checkout-main'>
             <div className='checkout-grid'>
@@ -37,7 +54,10 @@ function Checkout() {
             </div>
             <div className="checkout-summary">
                 <p>Total: ${total}</p>
-                <button>Checkout</button>
+                <div className="buttons">
+                    <button onClick={() => purchase()}>Checkout</button>
+                    <button onClick={() => continueShopping()}>Continue Shopping</button>
+                </div>
             </div>
         </main>
         </>

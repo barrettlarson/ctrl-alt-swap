@@ -1,13 +1,22 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './index.css'
 import { API_URL } from './api'
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]); 
-  const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const stored = (() => {
+    try { return JSON.parse(localStorage.getItem('cart') || '[]'); }
+    catch { return []; }
+  })();
+
+  const initialCart = location.state?.cart || stored || [];
+
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState(initialCart); 
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     async function load() {
@@ -30,6 +39,11 @@ function App() {
     }
     load();
   }, []);
+
+  useEffect(() => {
+    try { localStorage.setItem('cart', JSON.stringify(cart)); }
+    catch (e) { console.error('Failed to save cart to localStorage:', e); }
+  }, [cart])
 
   function addToCart(productId) {
     for(let item of cart) {

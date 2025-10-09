@@ -180,12 +180,17 @@ button {
 }
 
 .checkout-summary {
+  margin-top: 1rem;
   font-size: 1.5rem;
-  margin: 1rem 0;
-  border: 2px solid black;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  width: 300px;
-  height: 100%;
-  text-align: center;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start; /* Ensures content stays at the top */
+  align-self: flex-start;      /* Keeps the summary at the top of .checkout-main */
+}
+
+.buttons button {
+  width: 100%;
+  margin: 0.5rem 0;
 }
