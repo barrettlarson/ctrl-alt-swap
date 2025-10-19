@@ -8,20 +8,24 @@ const orderItemSchema = new mongoose.Schema({
 }, {_id: false});
 
 const addressSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zip: { type: String, required: true },
-    country: { type: String, required: true },
+    name: String,
+    street: String,
+    city: String,
+    state: String,
+    zip: String,
+    country: String
 }, {_id: false});
 
 const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     items: { type: [orderItemSchema], required: true },
     amount: { type: Number, required: true },
-    shippingAddress: { type: addressSchema},
-    status: { type: String, enum: ['pending', 'shipped', 'delivered', 'cancelled'], default: 'pending' },
+    shippingAddress: { type: addressSchema,
+        required: function () {
+            return this.status === 'paid' || this.status === 'shipped' || this.status === 'delivered';
+        }
+    },
+    status: { type: String, enum: ['pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'], default: 'pending' },
     stripeSessionId: { type: String },
     paymentIntentId: { type: String },
 }, { timestamps: true });
