@@ -15,12 +15,16 @@ function Checkout() {
     })();
 
     const [cart, setCart] = useState(initialCart);
-
+    
     useEffect(() => {
-        if(cart.length == 0) {
+        if(cart.length === 0) {
             continueShopping();
         }
-    })
+    }, [cart]);
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
     
     const total = cart.reduce((sum, item) => {
         const price = Number(item.product?.price || item.price || 0);
@@ -28,7 +32,7 @@ function Checkout() {
     }, 0);
 
     function continueShopping() {
-        navigate('/App', { state: { cart } });
+        navigate('/app', { state: { cart }});
     }
 
     function removeItem(itemId) {

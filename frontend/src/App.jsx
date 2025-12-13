@@ -65,9 +65,13 @@ function App() {
   const checkout = async () => {
     if(!cart.length) return alert('Cart is empty');
     else {
-      navigate('/Checkout', { state: { cart } });
+      navigate('/checkout', { state: { cart } });
     }
 
+  }
+
+  const navProduct = async (product) => {
+    navigate('/product', { state: { product }})
   }
 
   return (
@@ -89,11 +93,14 @@ function App() {
           {products
           .filter(p=> p.name.toLowerCase().includes(search.toLowerCase()))
           .map(p => (
-            <div key={p._id || p.id } className="product-card">
+            <div key={p._id || p.id } className="product-card" onClick={() => navProduct(p)}>
               <img className="product-image" src={(p.images && p.images[0]) || 'https://via.placeholder.com/300'} alt={p.name} />
               <h3>{p.name}</h3>
               <p>${p.price}</p>
-              <button onClick={() => addToCart(p._id || p.id)}>Add to Cart</button>
+              <button onClick={(e) => {
+                e.stopPropagation();
+                addToCart(p._id || p.id)}}
+                >Add to Cart</button>
             </div>
         ))}
       </div>
