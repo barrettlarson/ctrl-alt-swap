@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
+
 function Sidebar({filters, setFilters}) {
+
+    const navigate = useNavigate();
 
     const setCategory = (category) => {
         setFilters(prev => ({ ...prev, category }));
@@ -16,9 +21,13 @@ function Sidebar({filters, setFilters}) {
         setFilters({ category: "", price: "", condition: ""})
     }
 
+    const newListing = async () => {
+        navigate('/new-listing')
+    }
+
     return (
         <>
-            <button>Create New Listing</button>
+            <button onClick={() => newListing()}>Create New Listing</button>
             <button onClick={() => clearFilters()}>Clear Filters</button>
             <div className="filter">
                 <h3>Category:</h3>

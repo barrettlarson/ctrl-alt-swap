@@ -100,7 +100,7 @@ function App() {
   const navProduct = async (product) => {
     navigate('/product', { state: { product }})
   }
-
+  
   return (
     <>
       <header>
