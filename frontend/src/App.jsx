@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './index.css'
+import Sidebar from './Sidebar';
 import { API_URL } from './api'
 
 function App() {
@@ -17,6 +18,32 @@ function App() {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState(initialCart); 
   const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState({
+    category: "",
+    price: "",
+    condition: ""
+  });
+
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter(p => p.name?.toLowerCase().includes(search.toLowerCase()))
+      .filter(p => !filters.category || (p.category || "").toLowerCase() === filters.category)
+      .filter(p => {
+        if (!filters.condition) return true;
+        return (p.condition || "").toLowerCase() === filters.condition;
+      })
+      .filter(p => {
+        if (!filters.price) return true;
+        const price = Number(p.price);
+        if (Number.isNaN(price)) return false;
+
+        if (filters.price === "under50") return price < 50;
+        if (filters.price === "50to100") return price >= 50 && price <= 100;
+        if (filters.price === "100to200") return price > 100 && price <=200;
+        if (filters.price === "over200") return price > 200;
+        return true;
+      });
+  }, [products, search, filters]);
 
   useEffect(() => {
     async function load() {
@@ -88,10 +115,13 @@ function App() {
           <span className='item-count'>{totalCount}</span>
         </div>
       </header>
-      <main>
+      <div className="layout">
+        <aside>
+          <Sidebar filters={filters} setFilters={setFilters}/>
+        </aside>
+        <main>
         <div className='product-grid'>
-          {products
-          .filter(p=> p.name.toLowerCase().includes(search.toLowerCase()))
+          {filteredProducts
           .map(p => (
             <div key={p._id || p.id } className="product-card" onClick={() => navProduct(p)}>
               <img className="product-image" src={(p.images && p.images[0]) || 'https://via.placeholder.com/300'} alt={p.name} />
@@ -104,7 +134,8 @@ function App() {
             </div>
         ))}
       </div>
-      </main>
+        </main>
+      </div>
 
     </>
   )
