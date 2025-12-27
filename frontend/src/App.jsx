@@ -24,8 +24,10 @@ function App() {
     condition: ""
   });
 
+  const [sort, setSort] = useState("recent");
+
   const filteredProducts = useMemo(() => {
-    return products
+    let list = products
       .filter(p => p.name?.toLowerCase().includes(search.toLowerCase()))
       .filter(p => !filters.category || (p.category || "").toLowerCase() === filters.category)
       .filter(p => {
@@ -43,7 +45,20 @@ function App() {
         if (filters.price === "over200") return price > 200;
         return true;
       });
-  }, [products, search, filters]);
+    
+    const sorted = [...list];
+
+    if (sort === "recent") {
+      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    }
+    if (sort === "lowToHigh") {
+      sorted.sort((a, b) => Number(a.price) - Number(b.price))
+    }
+    if (sort === "highToLow") {
+      sorted.sort((a, b) => Number(b.price) - Number(a.price))
+    }
+    return sorted;
+  }, [products, search, filters, sort]);
 
   useEffect(() => {
     async function load() {
@@ -117,7 +132,7 @@ function App() {
       </header>
       <div className="layout">
         <aside>
-          <Sidebar filters={filters} setFilters={setFilters}/>
+          <Sidebar filters={filters} setFilters={setFilters} sort={sort} setSort={setSort}/>
         </aside>
         <main>
         <div className='product-grid'>

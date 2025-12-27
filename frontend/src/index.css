@@ -139,6 +139,10 @@ header {
     }
 }
 
+.sort {
+  padding: 10px 0px;
+}
+
 .search-bar {
   border: 0.0625rem solid #e0e3ea;
   border-radius: 1.25rem;

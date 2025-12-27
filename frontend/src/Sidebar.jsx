@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 
-function Sidebar({filters, setFilters}) {
+function Sidebar({filters, setFilters, sort, setSort}) {
 
     const navigate = useNavigate();
 
@@ -29,6 +29,18 @@ function Sidebar({filters, setFilters}) {
         <>
             <button onClick={() => newListing()}>Create New Listing</button>
             <button onClick={() => clearFilters()}>Clear Filters</button>
+            <div className="sort">
+                <select
+                    id="sort-by"
+                    value={sort}
+                    onChange={e => setSort(e.target.value)}
+                >
+                    <option value="recent">Recent</option>
+                    <option value="lowToHigh">Low to High</option>
+                    <option value="highToLow">High to Low</option>
+                </select>
+            </div>
+
             <div className="filter">
                 <h3>Category:</h3>
                 <div className="selection"><label><input type="radio" name="category" value="keyboards" checked={filters.category === "keyboards"} onChange={() => setCategory("keyboards")}/> Keyboards</label></div>
